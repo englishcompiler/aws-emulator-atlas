@@ -574,7 +574,7 @@ kms:Decrypt`;
             <td>${v.chip}</td>
             <td>${hit && !hit.ambiguous && hit.v[1] ? `<span class="minibar"><span style="width:${pct(hit.v[2], hit.v[1])}%"></span></span>${fmt(hit.v[2])}/${fmt(hit.v[1])}` : `<span class="muted">—</span>`}</td></tr>`).join("")}
           </tbody></table></div>
-          <p class="small muted" style="margin:12px 0 0">A test counts for an operation when it calls the operation and is scored for that service. Many are multi-step workflows, so a failure may come from another call in the same test; open the service to see which tests fail and where. “Verified” means the emulator matched AWS in the scenarios AWS chose to test, not every parameter combination. For anything untested, AWS recommends running your own test against both the emulator and real AWS.</p>
+          <p class="small muted" style="margin:12px 0 0">A test counts for an operation when it calls the operation and is scored for that service. Many are multi-step workflows, so a failure may come from another call in the same test; open the service to see which tests fail and where. “Mostly passing” means the emulator matched AWS in the scenarios AWS chose to test, not every parameter combination. For anything untested, AWS recommends running your own test against both the emulator and real AWS.</p>
         </div>`;
     }
   }

@@ -1,0 +1,1 @@
+{"slug":"sagemakerruntimehttp2-amazonsagemakerruntimehttp2","shape":"com.amazonaws.sagemakerruntimehttp2#AmazonSageMakerRuntimeHttp2","title":"Amazon SageMaker Runtime HTTP2","sdkId":"SageMaker Runtime HTTP2","protocol":"restJson1","prefix":"runtime.sagemaker","ops":[{"name":"InvokeEndpointWithBidirectionalStream","s":"impl","t":0,"p":0}],"tests":[],"issues":[]}

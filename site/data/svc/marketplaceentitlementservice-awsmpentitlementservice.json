@@ -1,0 +1,1 @@
+{"slug":"marketplaceentitlementservice-awsmpentitlementservice","shape":"com.amazonaws.marketplaceentitlementservice#AWSMPEntitlementService","title":"AWS Marketplace Entitlement Service","sdkId":"Marketplace Entitlement Service","protocol":"awsJson1_1","prefix":"entitlement.marketplace","ops":[{"name":"GetEntitlements","s":"impl","t":0,"p":0}],"tests":[],"issues":[]}

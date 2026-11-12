@@ -1,0 +1,1 @@
+{"slug":"accountaccessruntime-awsaccountaccessruntime","shape":"com.amazonaws.accountaccessruntime#AWSAccountAccessRuntime","title":"Account Access Runtime","sdkId":"Account Access Runtime","protocol":"restJson1","prefix":"account-access-runtime","ops":[{"name":"GetRoleCredentials","s":"impl","t":0,"p":0},{"name":"ListRoles","s":"impl","t":0,"p":0}],"tests":[],"issues":[]}

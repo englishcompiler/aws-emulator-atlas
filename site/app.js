@@ -670,7 +670,8 @@ kms:Decrypt`;
 
       <h2>How this atlas computes things</h2>
       <ul>
-        <li><strong>Sources:</strong> <code>scores.json.gz</code> from release <a href="https://github.com/aws/aws-emulator/releases/tag/${esc(M.release)}">${esc(M.release)}</a> (compared with ${esc(M.prev)}), <code>manifest.jsonl</code> at the evaluation suite's HEAD (${fmt(M.manifestRows)} rows), and the emulator source tree and <code>issues/</code> at HEAD, all as of ${new Date(M.scoredAt).toUTCString().slice(5, 16)}.</li>
+        <li><strong>Sources:</strong> <code>scores.json.gz</code> from release <a href="https://github.com/aws/aws-emulator/releases/tag/${esc(M.release)}">${esc(M.release)}</a> (compared with ${esc(M.prev)}), <code>manifest.jsonl</code> at the evaluation suite's HEAD (${fmt(M.manifestRows)} rows), and the emulator source tree and <code>issues/</code> at the <code>${esc(M.release)}</code> tag, so stubs and issues describe the scored commit.</li>
+        <li><strong>Updates:</strong> a GitHub Actions job checks AWS's releases every 6 hours and rebuilds the site when a new scored release appears. Last rebuild: ${M.builtAt ? new Date(M.builtAt).toUTCString().slice(5, 22) + " UTC" : "n/a"}.</li>
         <li><strong>Operation status</strong> comes from the source tree. Every operation bound to the service shape in its Smithy model is checked against <code>src/ops/&lt;op&gt;.rs</code>. A file headed <code>//! SCAFFOLDED, NOT IMPLEMENTED</code> is a stub; ops listed in <code>SKIPPED_STUBS.md</code>, or with no file, are “not routable”.</li>
         <li><strong>Service scores</strong> count every unit that lists the service, so cross-service tests count against each service involved. “Single-service” keeps only units that touch one service.</li>
         <li><strong>Operation test counts</strong> attribute a behavioral test to every operation in its manifest row, and a wire test to every operation in its recorded steps, counting only services the unit is scored for. Manifest prefixes (e.g. <code>cognito-idp</code>) are mapped to Smithy shapes by learning from single-service units.</li>
@@ -687,7 +688,7 @@ kms:Decrypt`;
       SUM = await getJSON("data/summary.json");
       SUM.services.forEach((s) => bySlug.set(s.slug, s));
       const M = SUM.meta;
-      document.getElementById("foot").innerHTML = `Data: <a href="https://github.com/aws/aws-emulator/releases/tag/${esc(M.release)}">AWS Emulator ${esc(M.release)}</a> scores, <a href="https://github.com/aws/aws-emulator-evaluation-suite">evaluation suite</a> manifest, source &amp; <code>issues/</code> at <a href="https://github.com/aws/aws-emulator/commit/${M.commit}">${M.commit.slice(0, 7)}</a>. Independent project, not affiliated with AWS. · <a href="https://github.com/englishcompiler/aws-emulator-atlas">Source</a>`;
+      document.getElementById("foot").innerHTML = `Data: <a href="https://github.com/aws/aws-emulator/releases/tag/${esc(M.release)}">AWS Emulator ${esc(M.release)}</a> scores, <a href="https://github.com/aws/aws-emulator-evaluation-suite">evaluation suite</a> manifest, source &amp; <code>issues/</code> at <a href="https://github.com/aws/aws-emulator/commit/${M.commit}">${M.commit.slice(0, 7)}</a>. Rebuilt automatically when AWS publishes a scored release${M.builtAt ? ` · last rebuild ${new Date(M.builtAt).toUTCString().slice(5, 22)} UTC` : ""}. Independent project, not affiliated with AWS. · <a href="https://github.com/englishcompiler/aws-emulator-atlas">Source</a>`;
       route();
     } catch (e) {
       app.innerHTML = `<p>Could not load data: ${esc(e.message)}</p>`;

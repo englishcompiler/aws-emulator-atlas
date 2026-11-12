@@ -1,0 +1,66 @@
+name: Update atlas
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # every 6 hours
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Rebuild even if the deployed release is current"
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths: ["site/**", "scripts/**", ".github/workflows/update.yml"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.update.outputs.changed }}
+      release: ${{ steps.update.outputs.release }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch newest scored release and rebuild data
+        id: update
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SITE_URL: https://englishcompiler.github.io/aws-emulator-atlas/
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ inputs.force }}" != "true" ]; then
+            python3 scripts/update.py
+          else
+            python3 scripts/update.py --force
+          fi
+
+      - name: Upload site
+        if: steps.update.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
+      - run: echo "Deployed atlas for ${{ needs.build.outputs.release }}"

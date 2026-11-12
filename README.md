@@ -9,10 +9,16 @@ A static site that shows how much of AWS the [AWS Emulator](https://github.com/a
 
 The site is plain HTML, CSS and JS, with no build step and no third-party runtime dependencies.
 
-## Rebuild the data
+## Automatic updates
+
+`.github/workflows/update.yml` runs every 6 hours, on manual dispatch, and on pushes to `main`. `scripts/update.py` finds the two newest `aws/aws-emulator` releases that ship `scores.json.gz` and compares the newest with the release the live site shows. It exits early if they match. Otherwise it clones the emulator at that release tag and the evaluation suite at HEAD, rebuilds `site/data`, and deploys to GitHub Pages. To force a rebuild: Actions → Update atlas → Run workflow → force.
+
+## Rebuild the data by hand
+
+`python3 scripts/update.py --force` does all of the steps below. To run them individually:
 
 ```bash
-git clone --depth 1 https://github.com/aws/aws-emulator.git src/aws-emulator
+git clone --depth 1 --branch v1.0.322 https://github.com/aws/aws-emulator.git src/aws-emulator
 git clone --depth 1 https://github.com/aws/aws-emulator-evaluation-suite.git src/aws-emulator-evaluation-suite
 mkdir -p raw
 for t in v1.0.322 v1.0.293; do

@@ -328,6 +328,7 @@ skipped_causes = collections.Counter(u.get("cause") for u in all_units if u["out
 
 meta = {
     "release": CUR, "prev": PREV,
+    "builtAt": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="minutes"),
     "scoredAt": cur["scoredAt"], "commit": cur["commit"],
     "prevScoredAt": prev["scoredAt"],
     "units": len(all_units), "outcomes": dict(oc), "prevOutcomes": dict(poc),
